@@ -33,3 +33,11 @@ Temporary Items
 
 ### private ###
 resources
+
+
+# Class config
+node_modules
+linux/data*
+tmp 
+ttt
+.vscode
