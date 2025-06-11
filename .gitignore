@@ -37,7 +37,7 @@ resources
 
 # Class config
 node_modules
-linux/data*
+*/linux/data*
 tmp 
 ttt
 .vscode
