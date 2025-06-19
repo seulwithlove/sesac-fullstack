@@ -37,7 +37,8 @@ resources
 
 # Class config
 node_modules
-linux/data*
+/lectures/linux/data*
 tmp 
 ttt
 .vscode
+/lectures/javascript/notepad
