@@ -1,0 +1,16 @@
+{
+  "name": "r-sesac-fullstack",
+  "version": "1.0.0",
+  "description": "Study Records from SESAC Yeongdeungpo Campus Fullstack Development Course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.30.1"
+  }
+}
