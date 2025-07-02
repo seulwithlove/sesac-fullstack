@@ -31,6 +31,7 @@ const memoFibonacci = memoized(function (n) {
   if (n <= 1) return n;
   return memoFibonacci(n - 2) + memoFibonacci(n - 1);
 });
+
 const lf3 = loopFibonacci(3);
 console.log("🚀 lf3:", lf3);
 
