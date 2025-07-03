@@ -26,10 +26,13 @@
 // teacher's
 const reduce = (arr, fn, initValue) => {
   let i = 0;
-  initValue = initValue ?? arr[i++];
+  // initValue = initValue ?? arr[i++];
   // initValue ??= arr[i++];
   let acc = initValue ?? arr[i++];
-  for (; i < arr.length; i++) {}
+  for (; i < arr.length; i++) {
+    acc = fn(acc, arr[i], i, arr);
+  }
+  return acc;
 };
 
 reduce([1, 2, 3], (a, b) => a + b, 0); // 6이면 통과!

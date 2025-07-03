@@ -19,31 +19,10 @@ reduce((acc, a) => fn, 초기값)
 
 import assert from "assert";
 
-// try 1
-// const reduce = (arr, fn, initValue) => {
-//   let acc = initValue === undefined ? arr[0] : initValue;
-//   for (const i of arr) {
-//     acc = fn(i, acc);
-//   }
-//   return acc;
-// };
-
-// try 2
 const reduce = (arr, fn, initValue) => {
-  let acc;
-  if (initValue === undefined) {
-    acc = arr[0];
-    for (let i = 1; i < arr.length; i++) {
-      acc = fn(acc, arr[i]);
-      console.log("🚀 if - acc:", acc);
-    }
-  } else {
-    acc = initValue;
-    for (const i of arr) {
-      acc = fn(acc, i);
-      console.log("🚀 else - acc:", acc);
-    }
-  }
+  let i = 0;
+  let acc = initValue ?? arr[i++];
+  for (; i < arr.length; i++) acc = fn(acc, arr[i], i, arr);
   return acc;
 };
 
