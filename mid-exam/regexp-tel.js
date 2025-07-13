@@ -32,22 +32,39 @@
 import assert from "assert";
 
 const telfmt = (numStr) => {
-  const len = numStr.length;
-  if (/^02\d+/.test(numStr)) {
-    return numStr.replace(/(02)(\d{3,4})(\d{4})/, "$1-$2-$3");
+  const patterns = [
+    // 02-...
+    { regex: /^(02)(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
+    // 8 ditis
+    { regex: /(^\d{4})(\d{4})$/, format: "$1-$2" },
+    // 10 digits
+    { regex: /^(\d{3})(\d{3})(\d{4})$/, format: "$1-$2-$3" },
+    // 11 digits
+    { regex: /^(\d{3})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
+    // 12 digits
+    { regex: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
+  ];
+
+  for (const { regex, format } of patterns) {
+    if (regex.test(numStr)) return numStr.replace(regex, format);
   }
-  if (/^\d{8}$/.test(numStr)) {
-    return numStr.replace(/(\d{4})(\d{4})/, "$1-$2");
-  }
-  if (/^\d{10}$/.test(numStr)) {
-    return numStr.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
-  }
-  if (/^\d{11}$/.test(numStr)) {
-    return numStr.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
-  }
-  if (/^\d{12}$/.test(numStr)) {
-    return numStr.replace(/(\d{4})(\d{3,4})(\d{4})/, "$1-$2-$3");
-  }
+
+  //   const len = numStr.length;
+  //   if (/^02\d+/.test(numStr)) {
+  //     return numStr.replace(/^(02)(\d{3,4})(\d{4})$/, "$1-$2-$3");
+  //   }
+  //   if (/^\d{8}$/.test(numStr)) {
+  //     return numStr.replace(/(\d{4})(\d{4})/, "$1-$2");
+  //   }
+  //   if (/^\d{10}$/.test(numStr)) {
+  //     return numStr.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+  //   }
+  //   if (/^\d{11}$/.test(numStr)) {
+  //     return numStr.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  //   }
+  //   if (/^\d{12}$/.test(numStr)) {
+  //     return numStr.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
+  //   }
 };
 
 // telfmt("0101234567"); // '010-123-4567'
