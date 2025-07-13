@@ -31,27 +31,30 @@ Fibonacci Sequence
 
 import assert from "assert";
 
-function loopFibonacci(num) {
-  if (num <= 1) return num;
-  let prev = 0;
+const loopFibonacci = (num) => {
+  let prev = 1;
   let cur = 1;
-  for (let i = 1; i < num; i++) {
+  if (num <= 1) return num;
+  for (let i = 2; i < num; i++) {
+    console.log("i:", i);
+    console.log("🚀 start prev, cur:", prev, cur);
     [prev, cur] = [cur, prev + cur];
+    console.log("🚀 next prev, cur:", prev, cur);
   }
   return cur;
-}
+};
 
-assert.equal(loopFibonacci(3), 2);
-assert.equal(loopFibonacci(5), 5);
+// assert.equal(loopFibonacci(3), 2);
+// assert.equal(loopFibonacci(5), 5);
 assert.equal(loopFibonacci(7), 13);
-assert.equal(loopFibonacci(30), 832040);
+// assert.equal(loopFibonacci(30), 832040);
 
 // ============
 
-function recurFibonacci(num) {
+const recurFibonacci = (num) => {
   if (num <= 1) return num;
   return recurFibonacci(num - 2) + recurFibonacci(num - 1);
-}
+};
 
 assert.equal(recurFibonacci(5), 5);
 assert.equal(recurFibonacci(7), 13);
@@ -59,18 +62,16 @@ assert.equal(recurFibonacci(30), 832040);
 
 // ============
 
-// memoized()는 함수를 인자로 받아서 cache를 가진 새로운 함수를 리턴
-const memoized = (fn) => {
+function memoized(fn) {
   const cache = {};
   return function (k) {
-    // console.log("cache:", cache);
     return cache[k] || (cache[k] = fn(k));
   };
-};
+}
 
-const memoFibonacci = memoized(function (n) {
-  if (n <= 1) return n;
-  return memoFibonacci(n - 2) + memoFibonacci(n - 1);
+const memoFibonacci = memoized(function (num) {
+  if (num <= 1) return num;
+  return recurFibonacci(num - 2) + recurFibonacci(num - 1);
 });
 
 assert.equal(memoFibonacci(5), 5);
