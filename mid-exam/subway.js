@@ -50,32 +50,32 @@ const LINE2 = [
 ];
 
 import assert from "assert";
+import { link } from "fs";
 
 class Subway {
   #start;
   #end;
-  #currIdx;
-  #didEnd = false; //도착역에 도달했는지 체크 플래그
-
+  #curIdx;
+  #didEnd = false;
   constructor(start, end) {
     this.#start = start;
     this.#end = end;
-    this.#currIdx = LINE2.indexOf(start); // 현재위치를 시작역의 인덱스로 설정
+    this.#curIdx = LINE2.indexOf(start);
   }
 
   nextStation() {
-    if (this.#currIdx === LINE2.length) {
-      this.#currIdx = 0;
+    if (this.#curIdx === LINE2.length) {
+      this.#curIdx = 0;
     }
-    this.#didEnd = this.#currIdx === LINE2.indexOf(this.#end);
-    return LINE2[this.#currIdx++];
+    this.#didEnd = this.#curIdx === LINE2.indexOf(this.#end);
+    return LINE2[this.#curIdx++];
   }
 
   *[Symbol.iterator]() {
     while (true) {
       if (this.#didEnd) {
         this.#didEnd = false;
-        this.#currIdx = LINE2.indexOf(this.#start); // 시작역 초기화
+        this.#curIdx = LINE2.indexOf(this.#start);
         break;
       }
       yield this.nextStation();
@@ -83,9 +83,9 @@ class Subway {
   }
 
   toString() {
-    return `${this.#start} -> ${this.#end} (This stop is: ${
-      LINE2[this.#currIdx - 1] // iterator에서 현재 인덱스 값을 증가하고 리턴하기 때문에 1을 빼야 진짜 현재 위치
-    })}`;
+    return `${this.#start} -> ${this.#end} : This stop is ${
+      LINE2[this.#curIdx - 1]
+    }`;
   }
 }
 
