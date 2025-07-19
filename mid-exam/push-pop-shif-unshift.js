@@ -24,19 +24,17 @@ import assert from "assert";
 
 const arr = [1, 2, 3, 4];
 
-const push = (arr, args) => [...arr, ...args];
+const push = (arr, ...args) => [...arr, ...args];
 // assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
 // console.log("🚀 push(arr, 5, 6):", push(arr, 5, 6));
 
 const pop = (arr, num) => {
-  if (!num) return arr.at(-1);
-  return arr.slice(-num);
+  return num === undefined ? arr.at(-1) : arr.slice(-num);
 };
-
 // assert.deepStrictEqual(pop(arr), 4);
 // console.log("🚀 pop(arr):", pop(arr));
 
-// assert.deepStrictEqual(pop(arr, 2), [4, 5]); // 2개 팝!
+// assert.deepStrictEqual(pop(arr, 2), [3, 4]); // 2개 팝!
 // console.log("🚀 pop(arr, 2):", pop(arr, 2));
 
 const unshift = (arr, ...args) => [...args, ...arr];
@@ -47,9 +45,7 @@ const unshift = (arr, ...args) => [...args, ...arr];
 // assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
 // console.log("🚀 unshift(arr, 7, 8):", unshift(arr, 7, 8));
 
-const shift = (arr, num = 1) => {
-  return [arr.slice(0, num), arr.slice(num)];
-};
+const shift = (arr, num = 1) => [arr.slice(0, num), arr.slice(num)];
 
 // assert.deepStrictEqual(shift(arr), [[1], [2, 3, 4]]); // [shift되는 원소들, 남은 원소들]
 // console.log("🚀 shift(arr),:", shift(arr));

@@ -31,47 +31,43 @@ Fibonacci Sequence
 
 import assert from "assert";
 
-const loopFibonacci = (num) => {
-  let prev = 1;
+const loopFibonacci = (n) => {
+  let prev = 0;
   let cur = 1;
-  if (num <= 1) return num;
-  for (let i = 2; i < num; i++) {
-    console.log("i:", i);
-    console.log("🚀 start prev, cur:", prev, cur);
+  if (n <= 1) return n;
+  for (let i = 1; i < n; i++) {
     [prev, cur] = [cur, prev + cur];
-    console.log("🚀 next prev, cur:", prev, cur);
   }
   return cur;
 };
 
-// assert.equal(loopFibonacci(3), 2);
-// assert.equal(loopFibonacci(5), 5);
+assert.equal(loopFibonacci(3), 2);
+assert.equal(loopFibonacci(5), 5);
 assert.equal(loopFibonacci(7), 13);
-// assert.equal(loopFibonacci(30), 832040);
+assert.equal(loopFibonacci(30), 832040);
 
 // ============
 
-const recurFibonacci = (num) => {
-  if (num <= 1) return num;
-  return recurFibonacci(num - 2) + recurFibonacci(num - 1);
+const recurFibonacci = (n) => {
+  if (n <= 1) return n;
+  return recurFibonacci(n - 2) + recurFibonacci(n - 1);
 };
-
 assert.equal(recurFibonacci(5), 5);
 assert.equal(recurFibonacci(7), 13);
 assert.equal(recurFibonacci(30), 832040);
 
-// ============
+// // ============
 
-function memoized(fn) {
+const memoized = (fn) => {
   const cache = {};
   return function (k) {
     return cache[k] || (cache[k] = fn(k));
   };
-}
+};
 
-const memoFibonacci = memoized(function (num) {
-  if (num <= 1) return num;
-  return recurFibonacci(num - 2) + recurFibonacci(num - 1);
+const memoFibonacci = memoized((n) => {
+  if (n <= 1) return n;
+  return memoFibonacci(n - 2) + memoFibonacci(n - 1);
 });
 
 assert.equal(memoFibonacci(5), 5);

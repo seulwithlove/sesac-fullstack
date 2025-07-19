@@ -17,8 +17,8 @@
 // 1) shallow copy
 const shallowCopy = (obj) => {
   const result = {};
-  for (const k in obj) {
-    result[k] = obj[k];
+  for (let [k, v] of Object.entries(obj)) {
+    result[k] = v;
   }
   return result;
 };
@@ -37,10 +37,10 @@ const kim2 = {
 
 const deepCopy = (obj) => {
   const result = {};
-  for (const k in obj) {
-    if (typeof obj[k] === "object" && obj[k] !== null) {
-      result[k] = deepCopy(obj[k]);
-    } else result[k] = obj[k];
+  for (let [k, v] of Object.entries(obj)) {
+    typeof v === "object" && v !== null
+      ? (result[k] = deepCopy(v))
+      : (result[k] = v);
   }
   return result;
 };

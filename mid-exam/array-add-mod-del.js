@@ -29,23 +29,27 @@ const park = { id: 4, name: "Park" };
 const users = [kim, lee, park]; // 오염되면 안됨!!
 
 //=========addUser()
-const addUser = (u) => [...users, u];
-
-//=========removeUser()
-const removeUser = (u) => users.filter((i) => i !== u);
-
-//==========changeUser()
-const changeUser = (u1, u2) => {
-  return users.map((user) => (user === u1 ? u2 : user));
-};
+const addUser = (newUser) => [...users, newUser];
 
 assert.deepStrictEqual(addUser(hong), [kim, lee, park, hong]);
 // console.log("🚀 addUser(hong):", addUser(hong));
 assert.deepStrictEqual(users, [kim, lee, park]);
 
+//=========removeUser()
+const removeUser = (deletedUser) => users.filter((u) => u !== deletedUser);
+
 assert.deepStrictEqual(removeUser(lee), [kim, park]);
 console.log("🚀 removeUser(lee):", removeUser(lee));
 assert.deepStrictEqual(users, [kim, lee, park]);
+
+//==========changeUser()
+const changeUser = (u1, u2) => {
+  const result = [];
+  // for (const u of users) {
+  //   u === u1 ? result.push(u2) : result.push(u);
+  // }
+  return users.map((u) => (u === u1 ? u2 : u));
+};
 
 assert.deepStrictEqual(changeUser(kim, choi), [choi, lee, park]);
 // console.log("🚀 changeUser(kim, choi):", changeUser(kim, choi));
