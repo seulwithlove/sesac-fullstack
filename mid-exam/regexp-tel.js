@@ -4,10 +4,10 @@
 /[\d{}]-[\d{}]-[\d{}]/
 
 1. 지역번호인 경우
-- 지역번호 2자리
+- 지역번호 02 2자리
   - 9개: ㅇㅇ-ㅇㅇㅇ-ㅇㅇㅇㅇ
   /[\d{2}]-[\d{3}]-[\d{4}]/
-  - 10개: ㅇㅇ-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ : 02-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
+  - 10개: 02-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
 
 - 지역번호 3자리
   - 10개: ㅇㅇㅇ-ㅇㅇㅇ-ㅇㅇㅇㅇ
@@ -15,67 +15,47 @@
 
 2. 핸드폰 번호인 경우
 - 10개: ㅇㅇㅇ-ㅇㅇㅇ-ㅇㅇㅇㅇ
-
 - 11개: ㅇㅇㅇ-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
 
 
 3. 그외
 - 8개 : ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
-
 - 11개 : ㅇㅇㅇ-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
-
 - 12개 : ㅇㅇㅇㅇ-ㅇㅇㅇㅇ-ㅇㅇㅇㅇ
-
-
 */
 
 import assert from "assert";
+const patterns = [
+  {
+    regexp: /(^\d{4})(\d{4}$)/,
+    format: "$1-$2",
+  },
+  {
+    regexp: /(^02)(\d{3,4})(\d{4}$)/,
+    format: "$1-$2-$3",
+  },
+  {
+    regexp: /(^\d{3})(\d{3})(\d{4})$/,
+    format: "$1-$2-$3",
+  },
+  {
+    regexp: /(^\d{3})(\d{4})(\d{4})$/,
+    format: "$1-$2-$3",
+  },
+  {
+    regexp: /(^\d{4})(\d{4})(\d{4})$/,
+    format: "$1-$2-$3",
+  },
+];
 
 const telfmt = (numStr) => {
-  const patterns = [
-    // 02-...
-    { regex: /^(02)(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
-    // 8 ditis
-    { regex: /(^\d{4})(\d{4})$/, format: "$1-$2" },
-    // 10 digits
-    { regex: /^(\d{3})(\d{3})(\d{4})$/, format: "$1-$2-$3" },
-    // 11 digits
-    { regex: /^(\d{3})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
-    // 12 digits
-    { regex: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
-  ];
-
-  for (const { regex, format } of patterns) {
-    if (regex.test(numStr)) return numStr.replace(regex, format);
+  for (let i in patterns) {
+    if (patterns[i].regexp.test(numStr)) {
+      console.log(i);
+      return numStr.replace(patterns[i].regexp, patterns[i].format);
+    }
   }
-
-  //   const len = numStr.length;
-  //   if (/^02\d+/.test(numStr)) {
-  //     return numStr.replace(/^(02)(\d{3,4})(\d{4})$/, "$1-$2-$3");
-  //   }
-  //   if (/^\d{8}$/.test(numStr)) {
-  //     return numStr.replace(/(\d{4})(\d{4})/, "$1-$2");
-  //   }
-  //   if (/^\d{10}$/.test(numStr)) {
-  //     return numStr.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-  //   }
-  //   if (/^\d{11}$/.test(numStr)) {
-  //     return numStr.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-  //   }
-  //   if (/^\d{12}$/.test(numStr)) {
-  //     return numStr.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
-  //   }
 };
-
-// telfmt("0101234567"); // '010-123-4567'
-// telfmt("01012345678"); // '010-1234-5678'
-// telfmt("0212345678"); // '02-1234-5678'
-// telfmt("021234567"); // '02-123-4567'
-// telfmt("0331234567"); // '033-123-4567'
-// telfmt("15771577"); // '1577-1577'
-// telfmt("07012341234"); // '070-1234-1234'
-// ex) in JSX
-//    <small>{telfmt(user.tel)}</small>
 
 assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
 assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
