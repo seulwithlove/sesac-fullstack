@@ -49,10 +49,9 @@ const patterns = [
 ];
 
 const telfmt = (numStr) => {
-  for (let i in patterns) {
-    if (patterns[i].regexp.test(numStr)) {
-      console.log(i);
-      return numStr.replace(patterns[i].regexp, patterns[i].format);
+  for (let p of patterns) {
+    if (regexp.test(numStr)) {
+      return numStr.replace(regexp, format);
     }
   }
 };
