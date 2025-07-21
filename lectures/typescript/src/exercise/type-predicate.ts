@@ -11,6 +11,8 @@ const f1 = (value: number | string | boolean | [string, number]) => {
 };
 
 // ============
+// 이런 문제가 더 실무에서 많음
+// 타입 확장
 
 interface Animal {}
 interface Dog extends Animal {
@@ -20,13 +22,16 @@ interface Cat extends Animal {
   punch(): void;
 }
 class Retriever implements Dog {
-  name = "Happy";
+  name;
+  constructor(name: string) {
+    this.name = name;
+  }
 }
 
 // type guard function
 function isDog(a: Animal): a is Dog {
-  // 이 부분을 작성하시오
-  return "name" in a; // 'key' in obj : 특정 속성이 있는지 런타임에서 체크
+  // 이 부분을 작성하시오 : 최대한 걸수 있는게 있는지 고민해서 => 일종의 테스트 코드 짜는것과 동일!
+  return typeof a === "object" && a !== null && "name" in a && !("punch" in a);
 }
 
 export {};

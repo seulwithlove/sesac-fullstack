@@ -18,6 +18,7 @@ const constCart = {
 } as const;
 
 type T3 = 1 | 2 | 3;
-type T4 = (typeof constCart)[keyof typeof constCart]; //이 부분을 작성하시오;
+type CCart = typeof constCart;
+type T4 = CCart[keyof typeof constCart]; //이 부분을 작성하시오; 이게 valueof!
 
 export {};

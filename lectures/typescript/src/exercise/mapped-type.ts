@@ -12,9 +12,12 @@ type UserNumKeyPrefix = {
 
 // 2) 다음에서 key가 string 타입인 것만 남기세요.
 
+// type UserOnlyStrKey = {
+//   [k in keyof User as k extends string ? k : never]: User[k];
+// };
 type UserOnlyStrKey = {
-  [k in keyof User as k extends string ? k : never]: User[k];
-};
+  [k in keyof User as k & string]: User[k];
+}; // teacher's
 
 // 3) User에서 key가 string 타입인 것만 남기고 prefix(user_)를 붙이세요 (2가지)
 

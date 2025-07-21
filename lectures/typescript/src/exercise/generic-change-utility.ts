@@ -12,7 +12,7 @@ interface IDept {
 }
 
 type Change<T, K extends keyof T, U> = {
-  [P in keyof T]: P extends K ? U : T[P];
+  [k in keyof T]: k extends K ? U : T[k];
 };
-type DeptCaptain = Change<IDept, "captain", IUser>;
+type DeptCaptain = Change<IDept, "id" | "captain", IUser>;
 // type Err = Change<IDept, "xxx", IUser>; // 존재하지 않는 키는 Error!!!

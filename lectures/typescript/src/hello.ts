@@ -8,4 +8,3 @@ let x: number | string;
 x = 1;
 console.log("🚀 x:", x);
 x = "abc";
-console.log("🚀 x:", x);

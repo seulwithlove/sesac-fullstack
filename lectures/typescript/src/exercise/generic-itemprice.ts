@@ -1,7 +1,7 @@
 // 다음 코드가 오류가 나지 않도록 수정하시오.
 // 단, itemPrices의 item에는 재고(stock)에 있는 item들만 가능합니다.
 type Item = { item: string; price: number };
-type ItemPrice<T, U> = { [P in keyof T]: P extends "item" ? keyof U : T[P] };
+type ItemPrice<T, U> = { [k in keyof T]: k extends "item" ? keyof U : T[k] };
 
 // //  우리가 원하는 구조
 // type ItemPrice<T, U> = {item: 'X' | 'Y' | 'Z'; price: number};
