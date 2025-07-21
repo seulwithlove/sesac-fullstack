@@ -25,37 +25,49 @@
 */
 
 import assert from "assert";
-const patterns = [
-  {
-    regexp: /(^\d{4})(\d{4}$)/,
-    format: "$1-$2",
-  },
-  {
-    regexp: /(^02)(\d{3,4})(\d{4}$)/,
-    format: "$1-$2-$3",
-  },
-  {
-    regexp: /(^\d{3})(\d{3})(\d{4})$/,
-    format: "$1-$2-$3",
-  },
-  {
-    regexp: /(^\d{3})(\d{4})(\d{4})$/,
-    format: "$1-$2-$3",
-  },
-  {
-    regexp: /(^\d{4})(\d{4})(\d{4})$/,
-    format: "$1-$2-$3",
-  },
-];
+// const patterns = [
+//   {
+//     regexp: /(^\d{4})(\d{4}$)/,
+//     format: "$1-$2",
+//   },
+//   {
+//     regexp: /(^02)(\d{3,4})(\d{4}$)/,
+//     format: "$1-$2-$3",
+//   },
+//   {
+//     regexp: /(^\d{3})(\d{3})(\d{4})$/,
+//     format: "$1-$2-$3",
+//   },
+//   {
+//     regexp: /(^\d{3})(\d{4})(\d{4})$/,
+//     format: "$1-$2-$3",
+//   },
+//   {
+//     regexp: /(^\d{4})(\d{4})(\d{4})$/,
+//     format: "$1-$2-$3",
+//   },
+// ];
 
-const telfmt = (numStr) => {
-  for (let p of patterns) {
-    if (regexp.test(numStr)) {
-      return numStr.replace(regexp, format);
-    }
-  }
-};
+// const telfmt = (numStr) => {
+//   for (let { regexp, format } of patterns) {
+//     if (regexp.test(numStr)) {
+//       return numStr.replace(regexp, format);
+//     }
+//   }
+// };
 
+// seunggu's version
+function telfmt(phone) {
+  // 0[3-6]\d
+  // 0[3-6][0-9]
+  // 0[1-9][0-9]
+  return (
+    phone
+      .replace(/^(010|02|0[3-6]\d|070|0507)([0-9]{3,4})([0-9]{4})$/, "$1-$2-$3")
+      // .replace(/^(010|02|033|070|0507)([0-9]{3,4})([0-9]{4})$/, "$1-$2-$3")
+      .replace(/^([0-9]{4})([0-9]{4})$/, "$1-$2")
+  );
+}
 assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
 assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
 assert.deepStrictEqual(telfmt("0212345678"), "02-1234-5678");

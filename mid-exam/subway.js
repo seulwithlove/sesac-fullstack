@@ -50,7 +50,6 @@ const LINE2 = [
 ];
 
 import assert from "assert";
-import { link } from "fs";
 
 class Subway {
   #start;
@@ -83,7 +82,7 @@ class Subway {
   }
 
   toString() {
-    return `${this.#start} -> ${this.#end} : This stop is ${
+    return `${this.#start} => ${this.#end} : This stop is ${
       LINE2[this.#curIdx - 1]
     }`;
   }
@@ -106,9 +105,7 @@ const it1 = routes[Symbol.iterator]();
 assert.deepStrictEqual(it1.next(), { value: undefined, done: true });
 
 for (const s of [...routes]) {
-  console.log("🚀 ~ s: ", s);
 }
-
 const route3 = new Subway("문래", "합정"); // 46개 정거장이면 통과!
 assert.strictEqual([...route3].length, 46);
 const route4 = new Subway("신도림", "을지로입구"); // 48개 정거장이면 통과!

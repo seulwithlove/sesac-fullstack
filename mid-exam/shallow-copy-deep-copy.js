@@ -15,13 +15,14 @@
 */
 
 // 1) shallow copy
-const shallowCopy = (obj) => {
+function shallowCopy(obj) {
   const result = {};
   for (let [k, v] of Object.entries(obj)) {
+    console.log("k, v:", k, v);
     result[k] = v;
   }
   return result;
-};
+}
 
 const kim = { nid: 3, nm: "Kim", addr: "Pusan" };
 const newKim1 = shallowCopy(kim);
@@ -35,15 +36,19 @@ const kim2 = {
   addr: { city: "Pusan", road: "Haeundaero", zip: null },
 };
 
-const deepCopy = (obj) => {
+function deepCopy(obj) {
   const result = {};
   for (let [k, v] of Object.entries(obj)) {
-    typeof v === "object" && v !== null
-      ? (result[k] = deepCopy(v))
-      : (result[k] = v);
+    result[k] = typeof v === "object" && v !== null ? deepCopy(v) : v;
+
+    // if (typeof v === "object" && v !== null) {
+    //   result[k] = deepCopy(v);
+    // } else {
+    //   result[k] = v;
+    // }
   }
   return result;
-};
+}
 
 const newKim2 = deepCopy(kim2);
 console.log("🚀 newKim2:", newKim2);
