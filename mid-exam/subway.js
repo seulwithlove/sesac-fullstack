@@ -54,27 +54,27 @@ import assert from "assert";
 class Subway {
   #start;
   #end;
-  #curIdx;
+  #currentIndex;
   #didEnd = false;
   constructor(start, end) {
     this.#start = start;
     this.#end = end;
-    this.#curIdx = LINE2.indexOf(start);
+    this.#currentIndex = LINE2.indexOf(start);
   }
 
   nextStation() {
-    if (this.#curIdx === LINE2.length) {
-      this.#curIdx = 0;
+    if (this.#currentIndex === LINE2.length) {
+      this.#currentIndex = 0;
     }
-    this.#didEnd = this.#curIdx === LINE2.indexOf(this.#end);
-    return LINE2[this.#curIdx++];
+    this.#didEnd = this.#currentIndex === LINE2.indexOf(this.#end);
+    return LINE2[this.#currentIndex++];
   }
 
   *[Symbol.iterator]() {
     while (true) {
       if (this.#didEnd) {
+        this.#currentIndex = LINE2.indexOf(this.#start);
         this.#didEnd = false;
-        this.#curIdx = LINE2.indexOf(this.#start);
         break;
       }
       yield this.nextStation();
@@ -83,7 +83,7 @@ class Subway {
 
   toString() {
     return `${this.#start} => ${this.#end} : This stop is ${
-      LINE2[this.#curIdx - 1]
+      LINE2[this.#currentIndex - 1]
     }`;
   }
 }

@@ -19,9 +19,7 @@ const debounce = (fn, delay) => {
   return (...args) => {
     console.log("Arguments received:", args);
     if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
+    timer = setTimeout(fn, delay, ...args); // same : setTimeout(() => fn(...args), delay)
   };
 };
 
@@ -48,15 +46,12 @@ const throttle = (fn, delay) => {
   return (...args) => {
     console.log("Throttle called, timer exists?", !!timer);
     if (timer) {
-      console.log("Timer exists - ignoring this call");
       return; // 타이머가 있으면 무시
     }
     console.log("No timer - setting up new one");
     timer = setTimeout(() => {
-      console.log("Timer expired - executing function");
       fn(...args); // 일정시간 지난후 실행
       timer = null; // 다시 실행하도록 초기화
-      console.log("Timer reset to null");
     }, delay);
   };
 };
