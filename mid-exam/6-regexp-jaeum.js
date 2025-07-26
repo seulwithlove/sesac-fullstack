@@ -13,7 +13,7 @@ import assert from "assert";
 
 const ALPHA_NUMERIC = [..."LMNRlmnr013678"].map((a) => a.charCodeAt());
 // ["L", "M", "N", "R", "l", "m", "n", "r",...]
-console.log("🚀 ~ ALPHA_NUMERIC: ", ALPHA_NUMERIC);
+// console.log("🚀 ~ ALPHA_NUMERIC: ", ALPHA_NUMERIC);
 const ㄱ = "ㄱ".charCodeAt();
 const ㅎ = "ㅎ".charCodeAt();
 const 가 = "가".charCodeAt();
