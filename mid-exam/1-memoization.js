@@ -32,7 +32,14 @@ Fibonacci Sequence
 import assert from "assert";
 
 // const loopFibonacci;
-
+const loopFibonacci = (n) => {
+  if (n <= 1) return n;
+  let [prev, cur] = [0, 1];
+  for (let i = 1; i < n; i++) {
+    [prev, cur] = [cur, prev + cur];
+  }
+  return cur;
+};
 
 assert.equal(loopFibonacci(3), 2);
 assert.equal(loopFibonacci(5), 5);
@@ -42,6 +49,10 @@ assert.equal(loopFibonacci(30), 832040);
 // ============
 
 // const recurFibonacci;
+const recurFibonacci = (n) => {
+  if (n <= 1) return n;
+  return recurFibonacci(n - 2) + recurFibonacci(n - 1);
+};
 
 assert.equal(recurFibonacci(5), 5);
 assert.equal(recurFibonacci(7), 13);
@@ -49,9 +60,20 @@ assert.equal(recurFibonacci(30), 832040);
 
 // // // ============
 
+const memoized = (fn) => {
+  const cache = {};
+  return function (k) {
+    return cache[k] || (cache[k] = fn(k));
+  };
+};
+
+// const memoFibonacci = memoized((n) => {
+//   if (n <= 1) return n;
+//   return memoFibonacci(n - 2) + memoFibonacci(n - 1);
+// });
+
+const memoFibonacci = memoized((n) => recurFibonacci(n));
+
 assert.equal(memoFibonacci(5), 5);
-console.log("➡️ ~ memoFibonacci(5):", memoFibonacci(5));
 assert.equal(memoFibonacci(7), 13);
-console.log("➡️ ~ memoFibonacci(7):", memoFibonacci(7));
 assert.equal(memoFibonacci(30), 832040);
-console.log("➡️ ~ memoFibonacci(30):", memoFibonacci(30));
