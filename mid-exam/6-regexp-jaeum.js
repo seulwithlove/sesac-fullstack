@@ -1,16 +1,17 @@
 import assert from "assert";
 
 // 문자열이 한글 자음으로 끝나는지 체크하는 함수를 작성하시오.
-const ALPHA_NUMERIC = [..."LMNRlmnr136780"].map((a) => a.charCodeAt());
-// ["L", "M", "N", "R", "l", "m", "n", "r",...]
 
-const ㄱ = "ㄱ".charCodeAt();
-const ㅎ = "ㅎ".charCodeAt();
-const 가 = "가".charCodeAt();
-const 힣 = "힣".charCodeAt();
+const ㄱ = "ㄱ".charCodeAt(0);
+const ㅎ = "ㅎ".charCodeAt(0);
+const 가 = "가".charCodeAt(0);
+const 힣 = "힣".charCodeAt(0);
 // for (let i = 가; i <= "깋".charCodeAt(); i++) {
 //   console.log(i - 44032, String.fromCharCode(i), (i - 44032) % 28);
 // }
+
+const LOOKS_LIKE_JAEUM = [..."LMNRlmnr136780"].map((a) => a.charCodeAt(0));
+// ["L", "M", "N", "R", "l", "m", "n", "r",...]
 
 const isEndJaum = (str) => {
   const lastChar = str.charCodeAt(str.length - 1);
@@ -21,7 +22,7 @@ const isEndJaum = (str) => {
   if (lastChar >= 가 && lastChar <= 힣 && (lastChar - 가) % 28 !== 0)
     return true;
   // 3. 알파벳, 숫자 예외처리
-  if (ALPHA_NUMERIC.includes(lastChar)) return true;
+  if (LOOKS_LIKE_JAEUM.includes(lastChar)) return true;
   return false;
 };
 
