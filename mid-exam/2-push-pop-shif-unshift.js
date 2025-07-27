@@ -25,66 +25,39 @@ import assert from "assert";
 const arr = [1, 2, 3, 4];
 
 // push
-// const push = (arr, ...args) => [...arr, ...args];
-function push(item, ...n) {
-  const copy = [...item];
-  copy.push(...n);
-  return copy;
-}
+const push = (arr, ...args) => [...arr, ...args];
 
-// assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
-// console.log("🚀 push(arr, 5, 6):", push(arr, 5, 6));
+assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
+console.log("🚀 push(arr, 5, 6):", push(arr, 5, 6));
 
 // pop
-const pop = (arr, num) => (num === undefined ? arr.at(-1) : arr.slice(-num));
+const pop = (arr, n) => (n === undefined ? arr.at(-1) : arr.slice(-n));
 
-// function pop(item, n) {
-//   const copy = [...item];
-//   if (n === undefined) {
-//     return copy.pop();
-//   } else {
-//     return copy.slice(n, item.length);
-//   }
-// }
+assert.deepStrictEqual(pop(arr), 4);
+console.log("🚀 pop(arr):", pop(arr));
 
-// assert.deepStrictEqual(pop(arr), 5);
-// console.log("🚀 pop(arr):", pop(arr));
-
-// assert.deepStrictEqual(pop(arr, 2), [4, 5]); // 2개 팝!
-// console.log("🚀 pop(arr, 2):", pop(arr, 2));
+assert.deepStrictEqual(pop(arr, 2), [3, 4]); // 2개 팝!
+console.log("🚀 pop(arr, 2):", pop(arr, 2));
 
 // unshift
-// const unshift = (arr, ...args) => [...args, ...arr];
-function unshift(item, ...n) {
-  const copy = [...item];
-  return [...n, ...copy];
-}
+const unshift = (arr, ...args) => [...args, ...arr];
 
 assert.deepStrictEqual(unshift(arr, 0), [0, 1, 2, 3, 4]);
 console.log("🚀 unshift(arr, 0):", unshift(arr, 0));
 
-// assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
-// console.log("🚀 unshift(arr, 7, 8):", unshift(arr, 7, 8));
+assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
+console.log("🚀 unshift(arr, 7, 8):", unshift(arr, 7, 8));
 
 // shift
-// const shift = (arr, num = 1) => [arr.slice(0, num), arr.slice(num)];
+const shift = (arr, n = 1) => [arr.slice(0, n), arr.slice(n)];
 
-function shift(item, n) {
-  const copy = [...item];
-  if (n === undefined) {
-    return [copy.slice(0, 1), copy.slice(1, item.length)];
-  } else {
-    return [copy.slice(0, n), copy.slice(n, item.length)];
-  }
-}
+assert.deepStrictEqual(shift(arr), [[1], [2, 3, 4]]); // [shift되는 원소들, 남은 원소들]
+console.log("🚀 shift(arr),:", shift(arr));
 
-// assert.deepStrictEqual(shift(arr), [[1], [2, 3, 4]]); // [shift되는 원소들, 남은 원소들]
-// console.log("🚀 shift(arr),:", shift(arr));
-
-// assert.deepStrictEqual(shift(arr, 2), [
-//   [1, 2],
-//   [3, 4],
-// ]); // 2개 shift
-// console.log("🚀 shift(arr, 2):", shift(arr, 2));
+assert.deepStrictEqual(shift(arr, 2), [
+  [1, 2],
+  [3, 4],
+]); // 2개 shift
+console.log("🚀 shift(arr, 2):", shift(arr, 2));
 
 // assert.deepStrictEqual(arr, [1, 2, 3, 4]);
