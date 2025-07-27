@@ -4,11 +4,12 @@ const leex = { id: 3, name: "Lee", dept: "Client" };
 const users = [hongx, leex, kimx];
 
 type PropType = string | number | symbol;
+
 declare global {
   interface Array<T> {
     firstObject: T;
     lastObject: T;
-    mapBy<P extends keyof T>(prop: P): T[];
+    mapBy<P extends keyof T>(prop: P): T[P][];
     filterBy<P extends keyof T>(
       prop: P,
       value: T[P],
@@ -19,7 +20,7 @@ declare global {
       value: T[P],
       isIncludes?: boolean
     ): T[];
-    findBy<P extends keyof T>(prop: P, value: T[P]): T;
+    findBy<P extends keyof T>(prop: P, value: T[P]): T | undefined;
     sortBy<P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`>(
       prop: P
     ): T[];
@@ -27,24 +28,26 @@ declare global {
   }
 }
 
-Array.prototype.mapBy = function (prop: string) {
+Array.prototype.mapBy = function <T, P extends keyof T>(
+  this: T[],
+  prop: P
+): T[P][] {
   return this.map((a) => a[prop]);
 };
-console.log(users.mapBy("id")); // [1, 3, 2];
-console.log(users.mapBy("name")); // ['Hong', 'Lee', 'Kim']);
 
 Array.prototype.filterBy = function <T, P extends keyof T>(
+  this: T[],
   prop: P,
   value: T[P],
-  isIncludes = false
+  isIncludes: boolean = false
 ) {
   if (isIncludes) {
     return this.filter(
-      (a: T) =>
+      (a) =>
         Array.isArray(a[prop]) ||
         (typeof a[prop] === "string" &&
           typeof value === "string" &&
-          a[prop]?.includes(value))
+          a[prop].includes(value))
     );
   }
 
