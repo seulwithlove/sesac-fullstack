@@ -26,17 +26,19 @@
 
 import assert from "assert";
 
-const pattern = [
-  { reg: /^(\d{4})(\d{4})$/, format: "$1-$2" },
-  { reg: /^(02)(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
-  { reg: /^(\d{3})(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
-  { reg: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
+const patterns = [
+  { regExp: /^(\d{4})(\d{4})$/, format: "$1-$2" },
+  { regExp: /^(02)(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
+  { regExp: /^(\d{3})(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
+  { regExp: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
 ];
 
 const telfmt = (numStr) => {
-  for (let p of pattern) {
-    if (p.reg.test(numStr)) return numStr.replace(p.reg, p.format);
-  }
+  const matchedPattern = patterns.find(({ regExp }) => regExp.test(numStr));
+
+  return matchedPattern.regExp
+    ? numStr.replace(matchedPattern.regExp, matchedPattern.format)
+    : numStr;
 };
 
 assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
