@@ -42,13 +42,11 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
   isIncludes: boolean = false
 ) {
   if (isIncludes) {
-    return this.filter(
-      (a) =>
-        Array.isArray(a[prop]) ||
-        (typeof a[prop] === "string" &&
-          typeof value === "string" &&
-          a[prop].includes(value))
-    );
+    return this.filter((a) => {
+      typeof a[prop] === "string" &&
+        typeof value === "string" &&
+        a[prop].includes(value);
+    });
   }
 
   return this.filter((a) => a[prop] === value);
@@ -56,15 +54,31 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
 console.log(users.filterBy("id", 2)); // [kim]);
 console.log(users.filterBy("name", "i", true)); // [kim]
 
-Array.prototype.rejectBy = function (prop, value, isIncludes = false) {
-  return this.filter(
-    isIncludes ? (a) => !a[prop]?.includes(value) : (a) => a[prop] !== value
-  );
+Array.prototype.rejectBy = function <T, P extends keyof T>(
+  this: T[],
+  prop: P,
+  value: T[P],
+  isIncludes: boolean = false
+) {
+  return this.filter((a) => {
+    if (isIncludes) {
+      return !(
+        typeof a[prop] === "string" &&
+        typeof value === "string" &&
+        a[prop].includes(value)
+      );
+    }
+    return this.filter((a) => a[prop] !== value);
+  });
 };
 console.log(users.rejectBy("id", 2)); // [hong, lee]
 console.log(users.rejectBy("name", "i", true)); // [hong, lee]
 
-Array.prototype.findBy = function (prop, value) {
+Array.prototype.findBy = function <T, P extends keyof T>(
+  this: T[],
+  prop: P,
+  value: T[P]
+) {
   return this.find((a) => a[prop] === value);
 };
 console.log(users.findBy("name", "Kim")); //  kim;
@@ -72,22 +86,25 @@ console.log(users.findBy("name", "Kim")); //  kim;
 Array.prototype.sortBy = function <
   T,
   P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`
->(prop: P) {
-  const [key, direction = "asc"] = (
+>(this: T[], prop: P) {
+  const [key, dir = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
 
-  const dir = direction.toLowerCase() === "desc" ? -1 : 1;
-  return this.sort((a, b) => (a[key] > b[key] ? dir : -dir));
+  const direction = dir.toLowerCase() === "desc" ? -1 : 1;
+  return this.sort((a, b) => (a[key] > b[key] ? direction : -direction));
 };
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
 
-Array.prototype.groupBy = function <T, GF extends (a: T) => PropType>(gfn: GF) {
+Array.prototype.groupBy = function <T, GF extends (a: T) => PropType>(
+  this: T[],
+  gfn: GF
+) {
   const ret: Record<PropType, T[]> = {};
   for (const a of this) {
     const k = gfn(a);
-    ret[k] ||= [];
+    ret[k] ??= [];
     ret[k].push(a);
   }
 
@@ -117,7 +134,7 @@ Object.defineProperties(Array.prototype, {
     get<T>(this: T[]) {
       return this.at(-1);
     },
-    set(value) {
+    set<T>(this: T[], value: T) {
       this[this.length - 1] = value;
     },
   },
