@@ -21,7 +21,7 @@ declare global {
       isIncludes?: boolean
     ): T[];
     findBy<P extends keyof T>(prop: P, value: T[P]): T | undefined;
-    sortBy<P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`>(
+    sortBy<P extends keyof T | `${keyof T & string}:{"asc":"desc"}`>(
       prop: P
     ): T[];
     groupBy<GF extends (a: T) => PropType>(gfn: GF): Record<PropType, T[]>;
@@ -35,6 +35,10 @@ Array.prototype.mapBy = function <T, P extends keyof T>(
   return this.map((a) => a[prop]);
 };
 
+console.log("=========mapBy==========");
+console.log(users.mapBy("id")); // [1, 3, 2];
+console.log(users.mapBy("name")); // ['Hong', 'Lee', 'Kim']);
+
 Array.prototype.filterBy = function <T, P extends keyof T>(
   this: T[],
   prop: P,
@@ -43,14 +47,17 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
 ) {
   if (isIncludes) {
     return this.filter((a) => {
-      typeof a[prop] === "string" &&
-        typeof value === "string" &&
-        a[prop].includes(value);
+      return (
+        Array.isArray(a[prop]) ||
+        (typeof a[prop] === "string" &&
+          typeof value === "string" &&
+          a[prop].includes(value))
+      );
     });
   }
-
   return this.filter((a) => a[prop] === value);
 };
+console.log("=========filterBy==========");
 console.log(users.filterBy("id", 2)); // [kim]);
 console.log(users.filterBy("name", "i", true)); // [kim]
 
@@ -60,17 +67,20 @@ Array.prototype.rejectBy = function <T, P extends keyof T>(
   value: T[P],
   isIncludes: boolean = false
 ) {
-  return this.filter((a) => {
-    if (isIncludes) {
+  if (isIncludes) {
+    return this.filter((a) => {
       return !(
-        typeof a[prop] === "string" &&
-        typeof value === "string" &&
-        a[prop].includes(value)
+        Array.isArray(a[prop]) ||
+        (typeof a[prop] === "string" &&
+          typeof value === "string" &&
+          a[prop].includes(value))
       );
-    }
-    return this.filter((a) => a[prop] !== value);
-  });
+    });
+  }
+
+  return this.filter((a) => a[prop] !== value);
 };
+console.log("=========rejectBy==========");
 console.log(users.rejectBy("id", 2)); // [hong, lee]
 console.log(users.rejectBy("name", "i", true)); // [hong, lee]
 
@@ -81,19 +91,20 @@ Array.prototype.findBy = function <T, P extends keyof T>(
 ) {
   return this.find((a) => a[prop] === value);
 };
+console.log("=========findBy==========");
 console.log(users.findBy("name", "Kim")); //  kim;
 
 Array.prototype.sortBy = function <
   T,
-  P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`
+  P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`,
 >(this: T[], prop: P) {
   const [key, dir = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
-
   const direction = dir.toLowerCase() === "desc" ? -1 : 1;
   return this.sort((a, b) => (a[key] > b[key] ? direction : -direction));
 };
+console.log("=========sortBy==========");
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
 
@@ -110,16 +121,17 @@ Array.prototype.groupBy = function <T, GF extends (a: T) => PropType>(
 
   return ret;
 };
+console.log("=========groupBy==========");
 console.log(users.groupBy(({ dept }) => dept));
-/*
-Server: [
-  { id: 1, name: 'Hong', dept: 'Server' },
-  { id: 2, name: 'Kim', dept: 'Server' },
-],
-Client: [
-  { id: 3, name: 'Lee', dept: 'Client' }
-],
-*/
+// /*
+// Server: [
+//   { id: 1, name: 'Hong', dept: 'Server' },
+//   { id: 2, name: 'Kim', dept: 'Server' },
+// ],
+// Client: [
+//   { id: 3, name: 'Lee', dept: 'Client' }
+// ],
+// */
 
 Object.defineProperties(Array.prototype, {
   firstObject: {
@@ -128,6 +140,7 @@ Object.defineProperties(Array.prototype, {
     },
     set<T>(this: T[], value: T) {
       this[0] = value;
+      // this.with(0, value); // pure fn
     },
   },
   lastObject: {
@@ -136,10 +149,11 @@ Object.defineProperties(Array.prototype, {
     },
     set<T>(this: T[], value: T) {
       this[this.length - 1] = value;
+      // this.with(-1, value);
     },
   },
 });
-
+console.log("=========firstObject/lastObject==========");
 console.log("first/last=", users.firstObject.name, users.lastObject.name); // hong/lee
 users.firstObject = kimx;
 users.lastObject = hongx;
