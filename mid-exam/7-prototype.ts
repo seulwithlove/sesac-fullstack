@@ -22,7 +22,7 @@ declare global {
       isIncludes?: boolean
     ): T[];
     findBy<P extends keyof T>(prop: P, value: T[P]): T | undefined;
-    sortBy<P extends keyof T | `${keyof T & string}:{"asc":"desc"}`>(
+    sortBy<P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`>(
       prop: P
     ): T[];
     groupBy<GF extends (a: T) => PropType>(gfn: GF): Record<PropType, T[]>;
@@ -105,14 +105,14 @@ console.log(users.findBy("name", "Kim")); //  kim;
 Array.prototype.sortBy = function <
   T,
   P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`,
->(this: T[], prop: P) {
-  const [key, dir = "asc"] = (
+>(prop: P) {
+  const [key, direction = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
-  const direction = dir.toLowerCase() === "desc" ? -1 : 1;
-  return this.sort((a, b) => (a[key] > b[key] ? direction : -direction));
+
+  const dir = direction.toLowerCase() === "desc" ? -1 : 1;
+  return this.sort((a, b) => (a[key] > b[key] ? dir : -dir));
 };
-console.log("=========sortBy==========");
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
 
