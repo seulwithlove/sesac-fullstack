@@ -3,11 +3,13 @@
 
 import assert from "assert";
 
-const push = (array, ...args) => [...array, ...args];
-const pop = (array, cnt) =>
-  cnt === undefined ? array.at(-1) : array.slice(cnt);
-const unshift = (array, ...args) => [...args, ...array];
-const shift = (array, cnt = 1) => [array.slice(0, cnt), array.slice(cnt)];
+const push = (arr, ...args) => [...arr, ...args];
+const pop = (arr, cnt) => {
+  return cnt === undefined ? arr.at(-1) : arr.slice(cnt);
+};
+const unshift = (arr, ...args) => [...args, ...arr];
+const shift = (arr, cnt = 1) => [arr.slice(0, cnt), arr.slice(cnt)];
+
 const arr = [1, 2, 3, 4];
 assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
 assert.deepStrictEqual(pop(arr), 4);

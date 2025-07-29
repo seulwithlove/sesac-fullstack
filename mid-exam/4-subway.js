@@ -50,6 +50,7 @@ const LINE2 = [
 ];
 
 import assert from "assert";
+
 class Subway {
   #start;
   #end;
@@ -68,7 +69,6 @@ class Subway {
     this.#didEnd = this.#curIdx === LINE2.indexOf(this.#end);
     return LINE2[this.#curIdx++];
   }
-
   *[Symbol.iterator]() {
     while (true) {
       if (this.#didEnd) {
@@ -79,9 +79,8 @@ class Subway {
       yield this.nextStation();
     }
   }
-
   toString() {
-    return `${LINE2[this.#start]}=>${LINE2[this.#end]}: This stop is ${LINE2[this.#curIdx - 1]}`;
+    return `${LINE2[this.#start]}=> ${LINE2[this.#end]} : This stop is ${LINE2[this.#curIdx - 1]}`;
   }
 }
 

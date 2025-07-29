@@ -1,7 +1,6 @@
 // 전화번호를 정확한 형식으로 출력하는 함수를 작성하시오.
 
 import assert from "assert";
-
 const patterns = [
   { regExp: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
   { regExp: /^(\d{4})(\d{4})$/, format: "$1-$2" },
