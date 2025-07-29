@@ -50,13 +50,11 @@ const LINE2 = [
 ];
 
 import assert from "assert";
-
 class Subway {
   #start;
   #end;
   #curIdx;
   #didEnd = false;
-
   constructor(start, end) {
     this.#start = start;
     this.#end = end;
@@ -83,15 +81,12 @@ class Subway {
   }
 
   toString() {
-    return `${this.#start}=>${this.#end}: This stop is ${
-      LINE2[this.#curIdx - 1]
-    }`;
+    return `${LINE2[this.#start]}=>${LINE2[this.#end]}: This stop is ${LINE2[this.#curIdx - 1]}`;
   }
 }
 
 const routes = new Subway("문래", "신림");
-console.log([...routes]);
-
+// console.log([...routes]);
 assert.deepStrictEqual(
   [...routes],
   ["문래", "대림", "구로디지털단지", "신대방", "신림"]
@@ -105,8 +100,6 @@ const it1 = routes[Symbol.iterator]();
 // console.log(it1.next());
 assert.deepStrictEqual(it1.next(), { value: undefined, done: true });
 
-for (const s of [...routes]) {
-}
 const route3 = new Subway("문래", "합정"); // 46개 정거장이면 통과!
 assert.strictEqual([...route3].length, 46);
 const route4 = new Subway("신도림", "을지로입구"); // 48개 정거장이면 통과!

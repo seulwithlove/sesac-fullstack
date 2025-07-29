@@ -1,28 +1,19 @@
-import assert from "assert";
-
 // 문자열이 한글 자음으로 끝나는지 체크하는 함수를 작성하시오.
+import assert from "assert";
 
 const ㄱ = "ㄱ".charCodeAt(0);
 const ㅎ = "ㅎ".charCodeAt(0);
 const 가 = "가".charCodeAt(0);
 const 힣 = "힣".charCodeAt(0);
-// for (let i = 가; i <= "깋".charCodeAt(); i++) {
-//   console.log(i - 44032, String.fromCharCode(i), (i - 44032) % 28);
-// }
 
-const LOOKS_LIKE_JAEUM = [..."LMNRlmnr136780"].map((a) => a.charCodeAt(0));
-// ["L", "M", "N", "R", "l", "m", "n", "r",...]
+const exceptions = [..."LMNRlmnr013678"].map((a) => a.charCodeAt(0));
 
 const isEndJaum = (str) => {
-  const lastChar = str.charCodeAt(str.length - 1);
-
-  // 1. 단독 자음인지 검사
-  if (lastChar >= ㄱ && lastChar <= ㅎ) return true;
-  // 2. 한글 완성형이고 받침이 있는지 확인
-  if (lastChar >= 가 && lastChar <= 힣 && (lastChar - 가) % 28 !== 0)
+  const lastCode = str.charCodeAt(str.length - 1);
+  if (lastCode >= ㄱ && lastCode <= ㅎ) return true;
+  if (lastCode >= 가 && lastCode <= 힣 && (lastCode - 가) % 28 !== 0)
     return true;
-  // 3. 알파벳, 숫자 예외처리
-  if (LOOKS_LIKE_JAEUM.includes(lastChar)) return true;
+  if (exceptions.includes(lastCode)) return true;
   return false;
 };
 
@@ -48,20 +39,10 @@ assert.equal(isEndJaum("알파벳L"), true);
 //===================================================
 
 // 조사 '이/가, 을/를, 은/는'를 알아서 붙이는 함수를 작성하시오.
-
-const iga = (str) => {
-  return isEndJaum(str) ? "이" : "가";
-};
-const eunun = (str) => {
-  return isEndJaum(str) ? "은" : "는";
-};
-const eulul = (str) => {
-  return isEndJaum(str) ? "을" : "를";
-};
-const eyuya = (str) => {
-  return isEndJaum(str) ? "이어야" : "여야";
-};
-
+const iga = (str) => (isEndJaum(str) ? "이" : "가");
+const eunun = (str) => (isEndJaum(str) ? "은" : "는");
+const eulul = (str) => (isEndJaum(str) ? "을" : "를");
+const eyuya = (str) => (isEndJaum(str) ? "이어야" : "여야");
 // `고성군${iga("고성군")}`; // 고성군이  cf. `강원도${iga('강원도')}` ⇒ 강원도가
 // `고성군${eunun("고성군")}`; // 고성군은  cf. `강원도${eunun('강원도')}` ⇒ 강원도는
 // `고성군${eulul("고성군")}`; // 고성군을  cf. `강원도${eulul('강원도')}` ⇒ 강원도를

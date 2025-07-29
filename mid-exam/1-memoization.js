@@ -29,36 +29,10 @@ Fibonacci Sequence
 - 결과 리턴
 */
 
+// 3) memoization하여 작성하시오.
+// 수열의 규칙은 f(n) = f(n - 2) + f(n - 1)  (단, n <= 1 일 때 f(n) = n)
+// 즉, 0 ~ 9까지의 값은 [0, 1, 1, 2, 3, 5, 8, 13, 21, 34] 이다.
 import assert from "assert";
-
-// const loopFibonacci;
-const loopFibonacci = (n) => {
-  if (n <= 1) return n;
-  let [prev, cur] = [0, 1];
-  for (let i = 1; i < n; i++) {
-    [prev, cur] = [cur, prev + cur];
-  }
-  return cur;
-};
-
-assert.equal(loopFibonacci(3), 2);
-assert.equal(loopFibonacci(5), 5);
-assert.equal(loopFibonacci(7), 13);
-assert.equal(loopFibonacci(30), 832040);
-
-// ============
-
-// const recurFibonacci;
-const recurFibonacci = (n) => {
-  if (n <= 1) return n;
-  return recurFibonacci(n - 2) + recurFibonacci(n - 1);
-};
-
-assert.equal(recurFibonacci(5), 5);
-assert.equal(recurFibonacci(7), 13);
-assert.equal(recurFibonacci(30), 832040);
-
-// // // ============
 
 const memoized = (fn) => {
   const cache = {};
@@ -67,12 +41,12 @@ const memoized = (fn) => {
   };
 };
 
-// const memoFibonacci = memoized((n) => {
-//   if (n <= 1) return n;
-//   return memoFibonacci(n - 2) + memoFibonacci(n - 1);
-// });
+const memoFibonacci = memoized(function (n) {
+  if (n <= 1) return n;
+  return memoFibonacci(n - 2) + memoFibonacci(n - 1);
+});
 
-const memoFibonacci = memoized((n) => recurFibonacci(n));
+memoFibonacci(30); // 832040
 
 assert.equal(memoFibonacci(5), 5);
 assert.equal(memoFibonacci(7), 13);
