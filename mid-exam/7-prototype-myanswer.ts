@@ -49,38 +49,39 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
 ) {
   if (isIncludes) {
     return this.filter((a) => {
-      Array.isArray(a[prop]) ||
+      return (
+        Array.isArray(a[prop]) ||
         (typeof a[prop] === "string" &&
           typeof value === "string" &&
-          a[prop].includes(value));
+          a[prop].includes(value))
+      );
     });
   }
-
   return this.filter((a) => a[prop] === value);
 };
-console.log(users.filterBy("id", 2)); // [kim]);
-console.log(users.filterBy("name", "i", true)); // [kim]
+console.log("filterBy", users.filterBy("id", 2)); // [kim]);
+console.log("filterBy", users.filterBy("name", "i", true)); // [kim]
 
 // 객체 배열에서 prop !== value인 항목만 필터링
 // 조건에 해당하지 않는 요소만 반환
-type HasIncludes<T> = {
-  includes(searchElement: T, fromIndex?: number): boolean;
-};
-
-const hasIncludes = <T>(p: any, v: T): p is HasIncludes<T> =>
-  Array.isArray(p) || (typeof p === "string" && typeof v === "string");
 
 Array.prototype.rejectBy = function <T, P extends keyof T>(
   this: T[],
   prop: P,
   value: T[P],
-  isIncludes = false
+  isIncludes: boolean = false
 ) {
-  return this.filter(
-    isIncludes
-      ? (a) => hasIncludes(a[prop], value) && !a[prop].includes(value)
-      : (a) => a[prop] !== value
-  );
+  if (isIncludes) {
+    return this.filter((a) => {
+      return !(
+        Array.isArray(a[prop]) ||
+        (typeof a[prop] === "string" &&
+          typeof value === "string" &&
+          a[prop].includes(value))
+      );
+    });
+  }
+  return this.filter((a) => a[prop] !== value);
 };
 console.log(users.rejectBy("id", 2)); // [hong, lee]
 console.log(users.rejectBy("name", "i", true)); // [hong, lee]
@@ -98,14 +99,16 @@ console.log(users.findBy("name", "Kim")); //  kim;
 // 속성 기준 정렬(asc/desc)
 Array.prototype.sortBy = function <
   T,
-  P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`
+  P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`,
 >(this: T[], prop: P) {
   const [key, dir = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
 
   const direction = dir.toLowerCase() === "desc" ? -1 : 1;
-  return this.sort((a, b) => (a[key] > b[key] ? direction : -direction));
+  return this.slice().sort((a, b) =>
+    a[key] > b[key] ? direction : -direction
+  );
 };
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
