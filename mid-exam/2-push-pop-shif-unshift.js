@@ -5,20 +5,20 @@ import assert from "assert";
 
 const push = (arr, ...args) => [...arr, ...args];
 const pop = (arr, cnt) => {
-  return cnt === undefined ? arr.at(-1) : arr.slice(cnt);
+  return cnt === undefined ? arr.at(-1) : arr.slice(-cnt);
 };
 const unshift = (arr, ...args) => [...args, ...arr];
 const shift = (arr, cnt = 1) => [arr.slice(0, cnt), arr.slice(cnt)];
 
-const arr = [1, 2, 3, 4];
-assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
-assert.deepStrictEqual(pop(arr), 4);
-assert.deepStrictEqual(pop(arr, 2), [3, 4]); // 2개 팝!
-assert.deepStrictEqual(unshift(arr, 0), [0, 1, 2, 3, 4]);
-assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
-assert.deepStrictEqual(shift(arr), [[1], [2, 3, 4]]); // [shift되는 원소들, 남은 원소들]
+const arr = [1, 2, 3, 4, 5];
+assert.deepStrictEqual(push(arr, 6, 7), [1, 2, 3, 4, 5, 6, 7]);
+assert.deepStrictEqual(pop(arr), 5);
+assert.deepStrictEqual(pop(arr, 2), [4, 5]); // 2개 팝!
+assert.deepStrictEqual(unshift(arr, 0), [0, 1, 2, 3, 4, 5]);
+assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4, 5]);
+assert.deepStrictEqual(shift(arr), [[1], [2, 3, 4, 5]]); // [shift되는 원소들, 남은 원소들]
 assert.deepStrictEqual(shift(arr, 2), [
   [1, 2],
-  [3, 4],
+  [3, 4, 5],
 ]); // 2개 shift
-assert.deepStrictEqual(arr, [1, 2, 3, 4]);
+assert.deepStrictEqual(arr, [1, 2, 3, 4, 5]);

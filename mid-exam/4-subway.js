@@ -80,7 +80,7 @@ class Subway {
     }
   }
   toString() {
-    return `${LINE2[this.#start]}=> ${LINE2[this.#end]} : This stop is ${LINE2[this.#curIdx - 1]}`;
+    return `${this.#start}=>${this.#end}: This stop is ${LINE2[this.#curIdx - 1]}`;
   }
 }
 

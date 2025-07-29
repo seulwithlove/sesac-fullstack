@@ -33,7 +33,6 @@ Fibonacci Sequence
 // 수열의 규칙은 f(n) = f(n - 2) + f(n - 1)  (단, n <= 1 일 때 f(n) = n)
 // 즉, 0 ~ 9까지의 값은 [0, 1, 1, 2, 3, 5, 8, 13, 21, 34] 이다.
 import assert from "assert";
-
 const memoized = (fn) => {
   const cache = {};
   return function (k) {
@@ -45,7 +44,6 @@ const memoFibonacci = memoized(function (n) {
   if (n <= 1) return n;
   return memoFibonacci(n - 2) + memoFibonacci(n - 1);
 });
-
 memoFibonacci(30); // 832040
 
 assert.equal(memoFibonacci(5), 5);

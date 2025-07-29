@@ -2,8 +2,8 @@
 
 import assert from "assert";
 
-const reduce = (arr, fn, initValue) => {
-  let [i, acc] = initValue === undefined ? [1, arr[0]] : [0, initValue];
+const reduce = (arr, fn, initVal) => {
+  let [i, acc] = initVal === undefined ? [1, arr[0]] : [0, initVal];
   for (; i < arr.length; i++) {
     acc = fn(acc, arr[i]);
   }

@@ -1,5 +1,6 @@
 // 문자열이 한글 자음으로 끝나는지 체크하는 함수를 작성하시오.
 import assert from "assert";
+
 const ㄱ = "ㄱ".charCodeAt(0);
 const ㅎ = "ㅎ".charCodeAt(0);
 const 가 = "가".charCodeAt(0);
@@ -15,6 +16,7 @@ const isEndJaum = (str) => {
   if (exceptions.includes(lastCode)) return true;
   return false;
 };
+
 isEndJaum("강원도"); // false
 isEndJaum("바라당"); // true
 isEndJaum("ㅜㅜ"); // false
@@ -37,6 +39,7 @@ assert.equal(isEndJaum("알파벳L"), true);
 //===================================================
 
 // 조사 '이/가, 을/를, 은/는'를 알아서 붙이는 함수를 작성하시오.
+
 const iga = (str) => (isEndJaum(str) ? "이" : "가");
 const eunun = (str) => (isEndJaum(str) ? "은" : "는");
 const eulul = (str) => (isEndJaum(str) ? "을" : "를");

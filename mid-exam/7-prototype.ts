@@ -3,7 +3,6 @@ const kimx = { id: 2, name: "Kim", dept: "Server" };
 const leex = { id: 3, name: "Lee", dept: "Client" };
 const users = [hongx, leex, kimx];
 
-// JS 객체의 key로 사용할수 있는 타입
 type PropType = string | number | symbol;
 
 declare global {
@@ -29,20 +28,13 @@ declare global {
   }
 }
 
-// 배열의 각 요소에서 특정 속성만 꺼내서 새로운 배열을 리턴
-Array.prototype.mapBy = function <T, P extends keyof T>(
-  this: T[],
-  prop: P
-): T[P][] {
+Array.prototype.mapBy = function <T, P extends keyof T>(this: T[], prop: P) {
   return this.map((a) => a[prop]);
 };
 
-console.log("=========mapBy==========");
 console.log(users.mapBy("id")); // [1, 3, 2];
 console.log(users.mapBy("name")); // ['Hong', 'Lee', 'Kim']);
 
-// 객체 배열에서 prop === value인 요소만 필터링
-// isIncludes가 true면: prop이 문자열/배열 일때 includes(value) 조건으로 작동
 Array.prototype.filterBy = function <T, P extends keyof T>(
   this: T[],
   prop: P,
@@ -52,21 +44,19 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
   if (isIncludes) {
     return this.filter((a) => {
       return (
-        Array.isArray(a[prop]) ||
+        (Array.isArray(a[prop]) && a[prop].includes(value)) ||
         (typeof a[prop] === "string" &&
           typeof value === "string" &&
           a[prop].includes(value))
       );
     });
   }
+
   return this.filter((a) => a[prop] === value);
 };
-console.log("=========filterBy==========");
 console.log(users.filterBy("id", 2)); // [kim]);
 console.log(users.filterBy("name", "i", true)); // [kim]
 
-// 객체 배열에서 prop !== value인 요소만 필터링
-// 조건에 해당하지 않는 요소만 리턴
 Array.prototype.rejectBy = function <T, P extends keyof T>(
   this: T[],
   prop: P,
@@ -76,7 +66,7 @@ Array.prototype.rejectBy = function <T, P extends keyof T>(
   if (isIncludes) {
     return this.filter((a) => {
       return !(
-        Array.isArray(a[prop]) ||
+        (Array.isArray(a[prop]) && a[prop].includes(value)) ||
         (typeof a[prop] === "string" &&
           typeof value === "string" &&
           a[prop].includes(value))
@@ -86,11 +76,9 @@ Array.prototype.rejectBy = function <T, P extends keyof T>(
 
   return this.filter((a) => a[prop] !== value);
 };
-console.log("=========rejectBy==========");
 console.log(users.rejectBy("id", 2)); // [hong, lee]
 console.log(users.rejectBy("name", "i", true)); // [hong, lee]
 
-// 조건에 맞는 하나의 요소 리턴
 Array.prototype.findBy = function <T, P extends keyof T>(
   this: T[],
   prop: P,
@@ -98,25 +86,23 @@ Array.prototype.findBy = function <T, P extends keyof T>(
 ) {
   return this.find((a) => a[prop] === value);
 };
-console.log("=========findBy==========");
 console.log(users.findBy("name", "Kim")); //  kim;
 
-// 속성 기준 정렬(기본: asc/desc)
 Array.prototype.sortBy = function <
   T,
   P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`,
->(prop: P) {
+>(this: T[], prop: P) {
+  // name | name:desc | name:asc
   const [key, direction = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
-
   const dir = direction.toLowerCase() === "desc" ? -1 : 1;
+  // console.log('🚀  dir:', dir, prop);
   return this.sort((a, b) => (a[key] > b[key] ? dir : -dir));
 };
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
 
-// 특정 기준으로 그룹핑
 Array.prototype.groupBy = function <T, GF extends (a: T) => PropType>(
   this: T[],
   gfn: GF
@@ -124,26 +110,23 @@ Array.prototype.groupBy = function <T, GF extends (a: T) => PropType>(
   const ret: Record<PropType, T[]> = {};
   for (const a of this) {
     const k = gfn(a);
-    ret[k] ??= [];
+    ret[k] ||= [];
     ret[k].push(a);
   }
 
   return ret;
 };
-console.log("=========groupBy==========");
 console.log(users.groupBy(({ dept }) => dept));
-// /*
-// Server: [
-//   { id: 1, name: 'Hong', dept: 'Server' },
-//   { id: 2, name: 'Kim', dept: 'Server' },
-// ],
-// Client: [
-//   { id: 3, name: 'Lee', dept: 'Client' }
-// ],
-// */
+/*
+Server: [
+  { id: 1, name: 'Hong', dept: 'Server' },
+  { id: 2, name: 'Kim', dept: 'Server' },
+],
+Client: [
+  { id: 3, name: 'Lee', dept: 'Client' }
+],
+*/
 
-// 속성처럼 접근하고 싶을때 get/set 활용
-// users.firstObject
 Object.defineProperties(Array.prototype, {
   firstObject: {
     get<T>(this: T[]) {
@@ -164,9 +147,9 @@ Object.defineProperties(Array.prototype, {
     },
   },
 });
-console.log("=========firstObject/lastObject==========");
+
 console.log("first/last=", users.firstObject.name, users.lastObject.name); // hong/lee
-users.firstObject = kimx; // 객체 넣기
+users.firstObject = kimx;
 users.lastObject = hongx;
 console.log("first/last=", users.firstObject.name, users.lastObject.name); // kim/hong
 
