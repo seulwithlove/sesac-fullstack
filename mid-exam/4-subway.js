@@ -50,6 +50,7 @@ const LINE2 = [
 ];
 
 import assert from "assert";
+
 class Subway {
   #start;
   #end;
@@ -68,6 +69,7 @@ class Subway {
     this.#didEnd = this.#curIdx === LINE2.indexOf(this.#end);
     return LINE2[this.#curIdx++];
   }
+
   *[Symbol.iterator]() {
     while (true) {
       if (this.#didEnd) {
@@ -78,12 +80,10 @@ class Subway {
       yield this.nextStation();
     }
   }
-
   toString() {
-    return `${this.#start}=> ${this.#end} : This Stop is ${LINE2.at(this.#curIdx - 1)}`;
+    return `${this.#start}-> ${this.#end}: This stop is ${LINE2.at(this.#curIdx - 1)}`;
   }
 }
-
 const routes = new Subway("문래", "신림");
 // console.log([...routes]);
 assert.deepStrictEqual(

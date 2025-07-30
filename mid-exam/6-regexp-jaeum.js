@@ -3,18 +3,18 @@ import assert from "assert";
 
 const CONSONANT_START = "ㄱ".charCodeAt(0);
 const CONSONANT_END = "ㅎ".charCodeAt(0);
-const HANGUEL_START = "가".charCodeAt(0);
-const HANGUEL_END = "힣".charCodeAt(0);
+const HANGEUL_START = "가".charCodeAt(0);
+const HANGEUL_END = "힣".charCodeAt(0);
 
-const exceptions = [..."LMNRlmnr136780"].map((i) => i.charCodeAt(0));
+const exceptions = [..."LMNRlmnr013678"].map((i) => i.charCodeAt(0));
 
-const isEndJaum = (numStr) => {
-  const lastCode = numStr.charCodeAt(numStr.length - 1);
+const isEndJaum = (str) => {
+  const lastCode = str.charCodeAt(str.length - 1);
   if (lastCode >= CONSONANT_START && lastCode <= CONSONANT_END) return true;
   if (
-    lastCode >= HANGUEL_START &&
-    lastCode <= HANGUEL_END &&
-    (lastCode - HANGUEL_START) % 28 !== 0
+    lastCode >= HANGEUL_START &&
+    lastCode <= HANGEUL_END &&
+    (lastCode - HANGEUL_START) % 28 !== 0
   )
     return true;
   if (exceptions.includes(lastCode)) return true;
