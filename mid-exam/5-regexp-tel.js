@@ -3,10 +3,10 @@
 import assert from "assert";
 
 const patterns = [
-  { regExp: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
   { regExp: /^(\d{4})(\d{4})$/, format: "$1-$2" },
   { regExp: /^(02)(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
   { regExp: /^(\d{3})(\d{3,4})(\d{4})$/, format: "$1-$2-$3" },
+  { regExp: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
 ];
 
 const telfmt = (numStr) => {
@@ -17,6 +17,7 @@ const telfmt = (numStr) => {
   }
   return numStr;
 };
+
 assert.deepStrictEqual(telfmt("050712345678"), "0507-1234-5678");
 assert.deepStrictEqual(telfmt("15771577"), "1577-1577");
 assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");

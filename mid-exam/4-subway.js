@@ -50,7 +50,6 @@ const LINE2 = [
 ];
 
 import assert from "assert";
-
 class Subway {
   #start;
   #end;
@@ -79,8 +78,9 @@ class Subway {
       yield this.nextStation();
     }
   }
+
   toString() {
-    return `${this.#start}=>${this.#end}: This stop is ${LINE2[this.#curIdx - 1]}`;
+    return `${this.#start}=> ${this.#end} : This Stop is ${LINE2.at(this.#curIdx - 1)}`;
   }
 }
 

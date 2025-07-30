@@ -4,7 +4,6 @@ const leex = { id: 3, name: "Lee", dept: "Client" };
 const users = [hongx, leex, kimx];
 
 type PropType = string | number | symbol;
-
 declare global {
   interface Array<T> {
     firstObject: T;
@@ -27,7 +26,6 @@ declare global {
     groupBy<GF extends (a: T) => PropType>(gfn: GF): Record<PropType, T[]>;
   }
 }
-
 Array.prototype.mapBy = function <T, P extends keyof T>(this: T[], prop: P) {
   return this.map((a) => a[prop]);
 };
@@ -51,7 +49,6 @@ Array.prototype.filterBy = function <T, P extends keyof T>(
       );
     });
   }
-
   return this.filter((a) => a[prop] === value);
 };
 console.log(users.filterBy("id", 2)); // [kim]);
@@ -91,14 +88,16 @@ console.log(users.findBy("name", "Kim")); //  kim;
 Array.prototype.sortBy = function <
   T,
   P extends keyof T | `${keyof T & string}:${"asc" | "desc"}`,
->(this: T[], prop: P) {
-  // name | name:desc | name:asc
+>(prop: P) {
   const [key, direction = "asc"] = (
     typeof prop === "string" && prop.includes(":") ? prop.split(":") : [prop]
   ) as [keyof T, "asc" | "desc"];
   const dir = direction.toLowerCase() === "desc" ? -1 : 1;
   // console.log('🚀  dir:', dir, prop);
-  return this.sort((a, b) => (a[key] > b[key] ? dir : -dir));
+  return this.sort((a, b) => {
+    if (a[key] === b[key]) return 0;
+    return a[key] > b[key] ? dir : -dir;
+  });
 };
 console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]

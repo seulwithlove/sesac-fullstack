@@ -4,9 +4,7 @@
 import assert from "assert";
 
 const push = (arr, ...args) => [...arr, ...args];
-const pop = (arr, cnt) => {
-  return cnt === undefined ? arr.at(-1) : arr.slice(-cnt);
-};
+const pop = (arr, cnt) => (cnt === undefined ? arr.at(-1) : arr.slice(-cnt));
 const unshift = (arr, ...args) => [...args, ...arr];
 const shift = (arr, cnt = 1) => [arr.slice(0, cnt), arr.slice(cnt)];
 

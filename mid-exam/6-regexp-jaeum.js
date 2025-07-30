@@ -1,17 +1,21 @@
 // 문자열이 한글 자음으로 끝나는지 체크하는 함수를 작성하시오.
 import assert from "assert";
 
-const ㄱ = "ㄱ".charCodeAt(0);
-const ㅎ = "ㅎ".charCodeAt(0);
-const 가 = "가".charCodeAt(0);
-const 힣 = "힣".charCodeAt(0);
+const CONSONANT_START = "ㄱ".charCodeAt(0);
+const CONSONANT_END = "ㅎ".charCodeAt(0);
+const HANGUEL_START = "가".charCodeAt(0);
+const HANGUEL_END = "힣".charCodeAt(0);
 
-const exceptions = [..."LMNRlmnr136780"].map((a) => a.charCodeAt(0));
+const exceptions = [..."LMNRlmnr136780"].map((i) => i.charCodeAt(0));
 
-const isEndJaum = (str) => {
-  const lastCode = str.charCodeAt(str.length - 1);
-  if (lastCode >= ㄱ && lastCode <= ㅎ) return true;
-  if (lastCode >= 가 && lastCode <= 힣 && (lastCode - 가) % 28 !== 0)
+const isEndJaum = (numStr) => {
+  const lastCode = numStr.charCodeAt(numStr.length - 1);
+  if (lastCode >= CONSONANT_START && lastCode <= CONSONANT_END) return true;
+  if (
+    lastCode >= HANGUEL_START &&
+    lastCode <= HANGUEL_END &&
+    (lastCode - HANGUEL_START) % 28 !== 0
+  )
     return true;
   if (exceptions.includes(lastCode)) return true;
   return false;
