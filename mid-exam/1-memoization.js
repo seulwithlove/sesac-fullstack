@@ -6,7 +6,7 @@
 
 import assert from "assert";
 
-const memoized = (fn) => {
+const memoize = (fn) => {
   const cache = {};
   return function (k) {
     if (k in cache) return cache[k];
@@ -14,12 +14,14 @@ const memoized = (fn) => {
   };
 };
 
-const memoFibonacci = memoized(function (n) {
+const recurFibonacci = (n) => {
   if (n <= 1) return n;
-  return memoFibonacci(n - 2) + memoFibonacci(n - 1);
-});
+  return recurFibonacci(n - 2) + recurFibonacci(n - 1);
+};
 
-memoFibonacci(30); // 832040
+const memoFibonacci = memoize(recurFibonacci);
+
+console.log(memoFibonacci(5)); // 5
 
 assert.equal(memoFibonacci(0), 0); // ✅ 추가 테스트도 통과
 assert.equal(memoFibonacci(1), 1);

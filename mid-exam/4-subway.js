@@ -81,9 +81,10 @@ class Subway {
     }
   }
   toString() {
-    return `${this.#start}-> ${this.#end}: This stop is ${LINE2.at(this.#curIdx - 1)}`;
+    return `${this.#start} => ${this.#end} : This stop is ${LINE2.at(this.#curIdx - 1)}`;
   }
 }
+
 const routes = new Subway("문래", "신림");
 // console.log([...routes]);
 assert.deepStrictEqual(

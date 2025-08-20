@@ -16,11 +16,8 @@ const reduce = (arr, fn, initVal) => {
   return acc;
 };
 
-// console.log(reduce([], (a, b) => a + b));
-// console.log(
-//   [].reduce((a, b) => a + b),
-//   0
-// );
+console.log(reduce([], (a, b) => a + b, 5));
+console.log([].reduce((a, b) => a + b, 5));
 const kim = { id: 2, name: "kim" };
 const lee = { id: 3, name: "Lee" };
 const park = { id: 4, name: "Park" };

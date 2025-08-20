@@ -9,13 +9,13 @@ const patterns = [
   { regExp: /^(\d{4})(\d{4})(\d{4})$/, format: "$1-$2-$3" },
 ];
 
-const telfmt = (numStr) => {
+const telfmt = (telStr) => {
   for (let { regExp, format } of patterns) {
-    if (regExp.test(numStr)) {
-      return numStr.replace(regExp, format);
+    if (regExp.test(telStr)) {
+      return telStr.replace(regExp, format);
     }
   }
-  return numStr;
+  return telStr;
 };
 
 assert.deepStrictEqual(telfmt("07012341234"), "070-1234-1234");
