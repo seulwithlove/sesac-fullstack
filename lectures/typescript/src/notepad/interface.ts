@@ -7,3 +7,8 @@
 interface Book {
   Novel: string;
 }
+
+interface KeyPair<K, V> {
+  key: K;
+  value: V;
+}

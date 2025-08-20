@@ -10,6 +10,7 @@ type FullUser2 = Partial<Record<keyof Users[number], string | number>>;
 type FullUser = {
   [k in keyof Users[number]]: Users[number][k];
 };
+
 const ret: FullUser = users.reduce((acc, user) => ({ ...acc, ...user }), {});
 // {}
 

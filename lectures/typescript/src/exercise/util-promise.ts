@@ -1,0 +1,67 @@
+// Promise.allSettled와 동일한 promiseAllSettled 함수를 TS로 작성하시오.
+
+function promiseAllSettled
+
+// test
+assert.deepStrictEqual(
+  await Promise.allSettled([randTime(1), randTime(2),randTime(3)]),
+  await promiseAllSettled([randTime(1), randTime(2),randTime(3)])
+);
+
+type Settled<T> =
+ | {
+     status: 'fulfilled';
+     value: T;
+   }
+ | {
+     status: 'rejected';
+     reason: unknown;
+   };
+
+
+export const randTime = <T>(val: T): Promise<T> =>
+ new Promise(resolve => setTimeout(resolve, Math.random() * 1000, val));
+
+const promiseAll = <T>(promises: Promise<T>[]) =>
+ new Promise((resolve, reject) => {
+   if (!promises?.length) reject(new Error('Promise를 전달하세요!'));
+
+   const results: T[] = [];
+   let cntToRun = promises.length;
+   for (let i = 0; i < promises.length; i += 1) {
+     const promise =
+       promises[i] instanceof Promise
+         ? promises[i]
+         : Promise.resolve(promises[i]);
+     promise
+       .then(succ => {
+         results[i] = succ;
+         if ((cntToRun -= 1) === 0) resolve(results);
+       })
+       .catch(error => {
+         reject(error);
+       });
+   }
+ });
+
+export function promiseAllSettled<T>(promises: Promise<T>[]) {
+ // const results: Promise<Settled<T>>[] = [];
+ // return Promise.all(
+ return promiseAll(
+   promises.map(promise =>
+     promise
+       .then(value => ({ status: 'fulfilled', value }))
+       .catch(reason => ({ status: 'rejected', reason }))
+   )
+ );
+
+ // return results;
+}
+
+
+
+assert.deepStrictEqual(
+  await Promise.allSettled([randTime(11), Promise.reject('REJECT'), randTime(33)]),
+  await promiseAllSettled([randTime(11), Promise.reject('REJECT'), randTime(33)])
+);
+
