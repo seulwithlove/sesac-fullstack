@@ -1,0 +1,46 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+section:not(:last-child) {
+  margin-bottom: 60px;
+}
+
+.flex-container {
+  display: flex;
+}
+
+#section-1 #section-1-container {
+  width: 600px;
+  padding: 16px;
+  border: 1px solid lightgrey;
+  margin-top: 16px;
+}
+
+#section-2 article {
+  width: 400px;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  padding: 0 16px;
+}
+
+#section-2 article > p:nth-of-type(1) {
+  margin-top: -12px;
+  color: grey;
+}
+
+.mini-box {
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
+.mini-box:nth-of-type(1) {
+  background-color: tomato;
+}
+.mini-box:nth-of-type(2) {
+  background-color: turquoise;
+}
+.mini-box:nth-of-type(3) {
+  background-color: cornflowerblue;
+}

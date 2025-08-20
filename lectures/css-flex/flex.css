@@ -1,0 +1,40 @@
+.flex-1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-1-sub {
+  display: flex;
+  gap: 16px;
+}
+
+.flex-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: space-between;
+}
+
+.flex-3 {
+  display: flex;
+}
+
+.flex-3 .mini-box {
+  flex-grow: 0;
+}
+
+.flex-3 .second {
+  flex: 2;
+}
+
+.flex-4 {
+  display: flex;
+}
+
+.flex-4 .mini-box {
+  flex-grow: 0;
+}
+
+.flex-4 .second {
+  flex-shrink: 3;
+}
